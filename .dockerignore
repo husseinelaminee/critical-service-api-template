@@ -1,0 +1,25 @@
+# flyctl launch added from .gitignore
+# Build outputs
+**\bin
+**\obj
+
+# User-specific files
+**\.vs
+**\*.user
+**\*.suo
+
+# Logs
+**\*.log
+
+# SQLite
+**\*.db
+**\*.db-shm
+**\*.db-wal
+
+# OS
+**\.DS_Store
+**\Thumbs.db
+
+# Docker
+**\docker-compose.override.yml
+fly.toml
