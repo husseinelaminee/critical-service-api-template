@@ -1,0 +1,6 @@
+@CriticalService.Api_HostAddress = http://localhost:5211
+
+GET {{CriticalService.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
