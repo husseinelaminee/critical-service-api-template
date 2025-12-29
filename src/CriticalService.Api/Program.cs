@@ -1,6 +1,8 @@
 using CriticalService.Api.Data;
 using CriticalService.Api.Middleware;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +25,10 @@ var app = builder.Build();
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseMiddleware<ProblemDetailsExceptionMiddleware>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 
@@ -78,7 +79,10 @@ app.MapGet("/todos/{id:guid}", async (Guid id, AppDbContext db, HttpResponse res
 });
 
 // POST (idempotent via Idempotency-Key middleware)
-app.MapPost("/todos", async (AppDbContext db, string title) =>
+app.MapPost("/todos", async (
+    AppDbContext db, 
+    string title,
+    [FromHeader(Name = "Idempotency-Key")] string? idempotencyKey) =>
 {
     if (string.IsNullOrWhiteSpace(title))
         return Results.BadRequest(new { message = "title is required" });
@@ -104,7 +108,8 @@ app.MapPut("/todos/{id:guid}", async (
     HttpRequest req,
     HttpResponse res,
     string? title,
-    bool? isDone) =>
+    bool? isDone,
+    [FromHeader(Name = "If-Match")] string ? ifMatch) =>
 {
     if (!req.Headers.TryGetValue("If-Match", out var ifMatchValues) ||
         string.IsNullOrWhiteSpace(ifMatchValues))
