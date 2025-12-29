@@ -117,3 +117,11 @@ If the version does not match, the API returns:
 * SQLite is used for demo and learning purposes only
 * HTTPS termination is expected to be handled by the hosting platform. If you run it with debug in visual studio you may need to use HTTPS instead.
 * This project is intentionally small and focused on backend fundamentals
+
+## Live demo
+
+https://hussein-elamine.vercel.app/projects/critical-service
+
+or
+
+https://criticalservicetemplate.fly.dev/todos
